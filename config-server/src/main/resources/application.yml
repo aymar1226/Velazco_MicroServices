@@ -1,0 +1,17 @@
+server:
+  port: 8888
+
+
+spring:
+  application:
+    name: config-service
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/aymar1226/Velazco-cloud-config.git
+    
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

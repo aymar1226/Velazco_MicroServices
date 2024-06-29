@@ -15,7 +15,7 @@ import com.utp.spring.models.dto.PaymentConfirmationRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-@FeignClient(name = "payment-service", url = "http://localhost:8081")
+@FeignClient(name = "payment-service")
 public interface PaymentClient {
 
 	@PostMapping("/api/payment/intent")

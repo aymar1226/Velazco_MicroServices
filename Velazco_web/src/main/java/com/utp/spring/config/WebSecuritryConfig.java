@@ -43,6 +43,7 @@ public class WebSecuritryConfig {
                 .requestMatchers("/api/usuarios/registrar").permitAll()
                 .requestMatchers("/api/payment/**").permitAll()
                 .requestMatchers("/api/productos/lista").hasAuthority("user")
+                .requestMatchers("/actuator/health").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
