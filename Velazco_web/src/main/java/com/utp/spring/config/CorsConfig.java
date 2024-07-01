@@ -49,6 +49,10 @@ public class CorsConfig {
                 registry.addMapping("/api/proveedores/**")
                         .allowedOrigins("http://localhost:4200")
                         .allowedMethods("*");
+                
+                registry.addMapping("/api/ordenes/**")
+		                .allowedOrigins("http://localhost:4200")
+		                .allowedMethods("*");
 
                 registry.addMapping("/api/payment/**")
                         .allowedOrigins("http://localhost:4200")

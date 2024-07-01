@@ -1,5 +1,6 @@
 package com.utp.spring.models.dao;
 
+import com.utp.spring.models.entity.Persona;
 import com.utp.spring.models.entity.Producto;
 import com.utp.spring.models.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,10 +19,10 @@ public interface IUsuarioDAO extends JpaRepository<Usuario,Long> {
 
     @Query("SELECT u FROM Usuario u WHERE u.persona.id = :persona")
     Optional<Usuario> findByPersona(@Param("persona") Long idPersona);
-
-
-
-
-
+    
+    @Query("SELECT p FROM Persona p " +
+ 	       "JOIN p.usuario u " +
+ 	       "WHERE u.correo = :correo")
+    Optional<Persona> getInfoByEmail(@Param("correo") String correo);
 
 }

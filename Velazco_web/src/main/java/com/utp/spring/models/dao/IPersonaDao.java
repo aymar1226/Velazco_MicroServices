@@ -20,6 +20,11 @@ import java.util.Optional;
             "JOIN u.privilegio pr "+
             "WHERE u.correo = :correo ")
     Optional<PersonaUsuarioDTO> findByEmail(@Param("correo") String correo);
+    
+    @Query("SELECT p FROM Persona p " +
+    	       "JOIN p.usuario u " +
+    	       "WHERE u.correo = :correo")
+    Optional<Persona> getInfoByEmail(@Param("correo") String correo);
 
 
     /*@Query(

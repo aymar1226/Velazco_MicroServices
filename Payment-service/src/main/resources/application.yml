@@ -9,9 +9,7 @@ spring:
       media-types:
         pdf: application/pdf
         xlsx: application/vnd.ms-excel
-server:
-  port: 8081
-
+        
 stripe:
   api:
     key: sk_test_51PQjD6P99HVja6pDkwJRsR5INZsf8Jo2I6RFd3keuruTca21H4ga4Qb4G1yMwAJku1zwXyrC4LLRwdKlikFahuaJ00OOHw8NM3

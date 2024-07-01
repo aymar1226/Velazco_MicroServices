@@ -22,7 +22,7 @@ public class OrdenServiceImpl implements IOrdenService {
 	@Autowired
 	private IProductoDAO productoDAO;
 	@Autowired
-	private IDetalleOrdenDAO iDetalleOrdenDAO;
+	private IDetalleOrdenDAO detalleOrdenDAO;
 
 	@Override
 	public Orden save(Orden orden) {
@@ -30,58 +30,35 @@ public class OrdenServiceImpl implements IOrdenService {
 	}
 
 	@Override
-	public List<Orden> findAll() {
-		return ordenDAO.findAll();
+	public List<DetalleOrden> findByOrden(Integer id) {
+		return detalleOrdenDAO.findByOrden(id);
 	}
-	// 0000010
-	public String generarNumeroOrden() {
-		int numero=0;
-		String numeroConcatenado="";
-		
-		List<Orden> ordenes = findAll();
-		
-		List<Integer> numeros= new ArrayList<Integer>();
-		
-		ordenes.stream().forEach(o -> numeros.add( Integer.parseInt( o.getCodigo())));
-		
-		if (ordenes.isEmpty()) {
-			numero=1;
-		}else {
-			numero= numeros.stream().max(Integer::compare).get();
-			numero++;
-		}
-		
-		if (numero<10) { //0000001000
-			numeroConcatenado="000000000"+String.valueOf(numero);
-		}else if(numero<100) {
-			numeroConcatenado="00000000"+String.valueOf(numero);
-		}else if(numero<1000) {
-			numeroConcatenado="0000000"+String.valueOf(numero);
-		}else if(numero<10000) {
-			numeroConcatenado="0000000"+String.valueOf(numero);
-		}		
-		
-		return numeroConcatenado;
-	}
-
-
+	
 
 	@Override
-	public List<Orden> findByUsuario(Usuario usuario) {
-		return ordenDAO.findByUsuario(usuario);
+	public List<Orden> findByCorreo(String correo) {
+		return ordenDAO.findByCorreo(correo);
 	}
 
 
-
-	@Override
-	public Optional<Orden> findById(Integer id) {
-		return ordenDAO.findById(id);
-	}
 
 	@Override
 	public Orden realizarVenta(List<ProductoDTO> productos, Usuario usuario) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Orden> findAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteOrdenUsuario(Integer id) {
+		Orden orden = ordenDAO.findById(id).orElseThrow(()-> new RuntimeException("No se encontro la orden"));
+		orden.setEstado('0');
+		ordenDAO.save(orden);
 	}
 
 }

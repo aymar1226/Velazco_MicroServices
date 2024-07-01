@@ -1,8 +1,10 @@
 package com.utp.spring.controllers;
 
+import com.utp.spring.models.dto.ChangePasswordRequest;
 import com.utp.spring.models.dto.PersonaUsuarioDTO;
 import com.utp.spring.models.dto.RegistroDTO;
 import com.utp.spring.models.entity.*;
+import com.utp.spring.security.JWTUtils;
 import com.utp.spring.services.IClienteService;
 import com.utp.spring.services.IPersonaService;
 import com.utp.spring.services.IRolService;
@@ -16,7 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
@@ -35,6 +37,9 @@ public class UsuarioController {
 
     @Autowired
     private IPersonaService personaService;
+    
+    @Autowired
+    private JWTUtils jwtUtils;
 
     BCryptPasswordEncoder passwordEncoder= new BCryptPasswordEncoder();
 
@@ -100,7 +105,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/delete")
-    public ResponseEntity deleteProducto(@RequestBody Usuario usuario) {
+    public ResponseEntity deleteUsuario(@RequestBody Usuario usuario) {
         System.out.println(usuario);
         try {
             usuarioService.delete(usuario);
@@ -109,14 +114,22 @@ public class UsuarioController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
+    
+    @PutMapping("/cambio-contrasena")
+    public ResponseEntity<Boolean> changePassword(HttpServletRequest request, @RequestBody ChangePasswordRequest changePasswordRequest) {
+    	
+        String correo = jwtUtils.extractEmailFromRequest(request);
+        
+        boolean result = usuarioService.changePassword(correo, changePasswordRequest.getCurrentPassword(), changePasswordRequest.getNewPassword());
+        
+        if (result) {
+            return ResponseEntity.ok(result); // Corrección en la sintaxis
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+    }
 
 }
-
-
-    //---------------------------Controllers----------------------------------------//
 
 
 

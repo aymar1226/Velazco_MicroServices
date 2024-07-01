@@ -11,26 +11,100 @@
             max-width: 600px;
             margin: 0 auto;
             padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            color: #0066cc;
-        }
-        .mensaje {
             background-color: #fff;
-            border: 1px solid #ddd;
+            border: 2px solid brown;
+            border-radius: 5px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #aaaaaa;
+        }
+        .header img {
+            width: 120px;
+        }
+        .header h1 {
+            margin: 0;
+            color: brown;
+        }
+        .info, .mensaje, .detalle {
+            background-color: #fff;
+            border-bottom: 1px solid #aaaaaa;
             padding: 15px;
+        }
+        
+        .mensaje{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .info p, .mensaje p {
+            margin: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
             margin-top: 20px;
+        }
+        table, th, td {
+            border: none;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: transparent;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Hola <span th:text="${nombre}"></span>,</h1>
-        <p>Este es un correo personalizado para ti.</p>
+        <div class="header">
+            <img th:src="${firebaseImageUrl}" alt="Logo">
+            <h1>Dulceria y Pasteleria Velazco S.A</h1>
+            <p>Av. Grau 195, Teléfono: (056) 232831 - 983 422 019, RUC: 20104848983</p>
+        </div>
+        <div class="info">
+            <p><strong>Nombre:</strong> <span th:text="${nombreCompleto}"></span></p>
+            <p><strong>DNI:</strong> <span th:text="${dni}"></span></p>
+            <p><strong>Dirección:</strong> <span th:text="${direccion}"></span></p>
+            <p><strong>Fecha:</strong> <span th:text="${#temporals.format(fecha, 'dd/MM/yyyy')}"></span></p>
+            <p><strong>Codigo:</strong> <span th:text="${codigo}"></span></p>
+
+        </div>
         <div class="mensaje">
-            <p>Tu mensaje personalizado es:</p>
-            <p><strong th:text="${mensaje}"></strong></p>
+            <p><strong>Gracias por tu compra</strong></p>
+        </div>
+        <h3>Detalles de tu compra:</h3>
+        <div class="detalle">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Cant.</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="detalle : ${detalles}">
+                        <td th:text="${detalle.cantidad}"></td>
+                        <td th:text="${detalle.producto.nombre}"></td>
+                        <td th:text="'S/ ' + ${#numbers.formatDecimal(detalle.total, 1, 'POINT', 2, 'COMMA')}"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class="total"><strong>Total: <span th:text="'S/ ' + ${#numbers.formatDecimal(total, 1, 'POINT', 2, 'COMMA')}"></span></strong></p>
+        </div>
+        <div class="footer">
+            <p>Gracias por tu compra en Dulceria y Pasteleria Velazco S.A</p>
         </div>
     </div>
 </body>

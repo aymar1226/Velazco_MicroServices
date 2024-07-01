@@ -10,6 +10,7 @@ import com.utp.spring.models.entity.Persona;
 import com.utp.spring.models.entity.Privilegio;
 import com.utp.spring.models.entity.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,9 @@ public class UsuarioServiceImpl implements IUsuarioService{
     private IPersonaDao personaDao;
     @Autowired
     private IEmpleadoDAO empleadoDAO;
+    
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public Optional<Usuario> findbyId(Long id) {
@@ -91,6 +95,22 @@ public class UsuarioServiceImpl implements IUsuarioService{
         throw new RuntimeException("El usuario con el correo "+personaUsuarioDTO.getUsuarioCorreo()+" no existe");
 
     }
+
+	@Override
+	public boolean changePassword(String correo, String currentPassword, String newPassword) {
+		
+		Usuario usuario = usuarioDAO.findByEmail(correo).orElseThrow(()-> new RuntimeException("No se encontro el usuario"));
+
+        if (usuario != null && passwordEncoder.matches(currentPassword, usuario.getPassword())) {
+            usuario.setPassword(passwordEncoder.encode(newPassword));
+            usuarioDAO.save(usuario);
+            return true;
+        } else {
+            return false;
+        }
+	}
+    
+    
 
 
 }

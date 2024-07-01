@@ -62,47 +62,4 @@ public class ProveedorController {
         }
     }
 
-
-
-/*--------------------------------------Controllers---------------------------------------------*/
-    @GetMapping("/lista_proveedores")
-    public String listarProveedores(Model modelo){
-        List<Proveedor> listaProveedores= proveedorService.findAll();
-        modelo.addAttribute("listaProveedores", listaProveedores);
-        return "crud_proveedores";
-    }
-
-    @GetMapping("/crear")
-    public String mostrarFormularioDeNuevoProveedor(Model modelo){
-
-        modelo.addAttribute("proveedor",new Proveedor());
-
-        return "proveedor_agregar";
-    }
-
-    @PostMapping("/guardar")
-    public String guardarProveedor(Proveedor proveedor) throws IOException {
-
-        proveedorService.save(proveedor);
-        return "redirect:/proveedor/lista_proveedores";
-    }
-
-
-    @GetMapping("editar/{id}")
-    public String edit(@PathVariable Long id, Model modelo){
-        Proveedor proveedor = new Proveedor();
-        Optional<Proveedor> optionalProveedor=proveedorService.findbyId(id);
-        proveedor=optionalProveedor.get();
-        modelo.addAttribute("proveedor",proveedor);
-        return "proveedor_editar";
-    }
-
-    @PostMapping("/update")
-    public String update(Proveedor proveedor) throws IOException {
-
-        proveedorService.save(proveedor);
-        return "redirect:/proveedor/lista_proveedores";
-    }
-
-
 }

@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.utp.spring.models.dto.CarritoDTO;
+import com.utp.spring.models.dto.CorreoDTO;
 import com.utp.spring.models.dto.OrdenDTO;
 import com.utp.spring.models.dto.PaymentDTO;
+import com.utp.spring.services.IEmailProducer;
 import com.utp.spring.services.IPaymentService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +28,9 @@ import jakarta.servlet.http.HttpServletRequest;
 public class PaymentController {
     @Autowired
     private IPaymentService paymentService;
+    
+    @Autowired
+    private IEmailProducer emailProducer;
     
     @PostMapping("/intent")
     public ResponseEntity<Map<String, String>> payment(@RequestBody CarritoDTO carritoDTO) throws StripeException {
@@ -41,6 +46,8 @@ public class PaymentController {
     public ResponseEntity<Map<Boolean, String>> confirm(@RequestBody OrdenDTO ordenDTO) throws StripeException {
     	Map<Boolean, String> verificacion = paymentService.confirm(ordenDTO);
     	
+    	
+
     	return new ResponseEntity<>(verificacion, HttpStatus.OK);
     }
 

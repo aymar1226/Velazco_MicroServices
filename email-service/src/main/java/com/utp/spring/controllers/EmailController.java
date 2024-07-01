@@ -1,5 +1,7 @@
 package com.utp.spring.controllers;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +22,7 @@ public class EmailController {
 	private IEmailService emailService;
 	
 	@PostMapping("/venta")
-	ResponseEntity<Void> enviarCorreoVenta(@RequestBody CorreoDTO correoDTO) throws MessagingException{
+	ResponseEntity<Void> enviarCorreoVenta(@RequestBody CorreoDTO correoDTO) throws MessagingException, IOException{
 		emailService.correoVenta(correoDTO);
 		return ResponseEntity.ok().build();
 	}

@@ -30,10 +30,4 @@ public class Orden {
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 
-	@OneToMany(mappedBy = "orden")
-	private List<DetalleOrden> detalle;
-
-
-	
-
 }

@@ -20,4 +20,6 @@ public interface IUsuarioService {
     String obtenerRolPorId(Long usuarioId);
     Optional<Privilegio> findPrivilegioByEmail(String correo);
     Usuario cambiarPrivilegio(PersonaUsuarioDTO personaUsuarioDTO);
+    public boolean changePassword(String correo, String currentPassword, String newPassword);
+
     }

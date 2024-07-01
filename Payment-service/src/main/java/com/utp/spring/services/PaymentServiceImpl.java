@@ -20,6 +20,7 @@ import com.utp.spring.models.dao.IDetalleOrdenDAO;
 import com.utp.spring.models.dao.IOrdenDAO;
 import com.utp.spring.models.dao.IUsuarioDAO;
 import com.utp.spring.models.dto.CarritoDTO;
+import com.utp.spring.models.dto.CorreoDTO;
 import com.utp.spring.models.dto.OrdenDTO;
 import com.utp.spring.models.dto.PaymentDTO;
 import com.utp.spring.models.entity.Carrito;
@@ -48,6 +49,9 @@ public class PaymentServiceImpl implements IPaymentService {
 
 	@Autowired
 	private IUsuarioDAO usuarioDAO;
+	
+    @Autowired
+    private IEmailProducer emailProducer;
 
 	@Override
 	public PaymentIntent paymentIntent(CarritoDTO carritoDTO) throws StripeException {
@@ -111,6 +115,13 @@ public class PaymentServiceImpl implements IPaymentService {
 
 				// Eliminar los productos comprados del carrito
 				carritoItemDao.deleteItemsByCarritoId(carrito.getId());
+				
+				CorreoDTO correoDTO = new CorreoDTO();
+		    	correoDTO.setCorreo(correo);
+		    	correoDTO.setIdOrden(orden.getId());
+		    	
+		    	// Enviar correo a la cola
+		        emailProducer.sendEmailToQueue(correoDTO);
 
 				return verificacion;
 			} else {
